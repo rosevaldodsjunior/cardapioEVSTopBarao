@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EVS TOP BARÃO | Cardápio Digital & Pedidos</title>
+  
+  <!-- Favicon Transparente -->
+  <link rel="icon" href="ico/favicon.png" type="image/png">
+  <link rel="shortcut icon" href="ico/favicon.ico" type="image/x-icon">
+
+  <!-- Google Fonts: Montserrat & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Barra de Acessibilidade & Idiomas Superior -->
+  <div class="top-utility-bar">
+    <div class="utility-container">
+      <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLanguage('pt')" title="Português">🇧🇷 PT</button>
+        <button class="lang-btn" onclick="setLanguage('en')" title="English">🇺🇸 EN</button>
+        <button class="lang-btn" onclick="setLanguage('es')" title="Español">🇪🇸 ES</button>
+      </div>
+      <div class="accessibility-controls">
+        <button id="contrast-toggle-btn" class="contrast-btn" onclick="toggleHighContrast()" title="Alternar Alto Contraste">
+          <i class="fa-solid fa-circle-half-stroke"></i> <span data-i18n="contrast_btn">Alto Contraste</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topo Institucional (Design Fiel ao Cabeçalho do PDF) -->
+  <header class="pdf-header">
+    <div class="header-container">
+      <div class="header-top-row">
+        <div class="header-brand-box">
+          <div class="header-logo-badge">
+            <img src="img/logoEvsTopBarao.jpg" alt="EVS Top Barão" onerror="this.onerror=null; this.src='img/logo-fallback.png';">
+          </div>
+          <div class="header-titles">
+            <h1 class="brand-name">EVS TOP BARÃO</h1>
+            <p class="brand-tagline" data-i18n="tagline">CARDÁPIO DE REFEIÇÕES E BEBIDAS SAUDÁVEIS</p>
+          </div>
+        </div>
+
+        <div class="header-contacts">
+          <div class="contact-item"><i class="fa-brands fa-instagram"></i> <span>@evstopbarao</span></div>
+          <div class="contact-item"><i class="fa-brands fa-whatsapp"></i> <span>+55 91 98202-5980</span></div>
+          <div class="contact-item"><i class="fa-solid fa-location-dot"></i> <span>Tv. Barão do Triunfo, 3271</span></div>
+        </div>
+      </div>
+
+      <!-- Faixa Dourada com Benefícios e Horários Oficiais -->
+      <div class="header-gold-strip">
+        <div class="strip-left">
+          <span class="badge-tag" data-i18n="badge_gluten">0% Glúten</span>
+          <span class="badge-tag" data-i18n="badge_lactose">0% Lactose</span>
+          <span class="badge-tag" data-i18n="badge_vegan">Veganos</span>
+        </div>
+        <div class="strip-center" id="live-status-pill">
+          <span class="status-dot"></span>
+          <span id="live-status-text">Verificando...</span>
+        </div>
+        <div class="strip-right">
+          <span><i class="fa-regular fa-clock"></i> <span data-i18n="hours_strip">Seg a Sex: 08h às 20h | Sáb: 09h às 13h</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="main-layout">
+
+    <!-- Barra de Pesquisa Instantânea -->
+    <div class="search-bar-wrapper">
+      <div class="search-input-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-input" placeholder="Pesquisar itens, shakes, bebidas, kits..." oninput="handleSearch()">
+        <button id="clear-search-btn" class="clear-btn" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Navegação de Categorias em Abas Estilizadas -->
+    <nav class="pdf-category-nav" id="category-nav">
+      <button class="nav-tab active" onclick="filterCategory('todos', this)">
+        <i class="fa-solid fa-border-all"></i> <span data-i18n="cat_todos">Todos</span> (<span id="count-todos">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('detox', this)">
+        <i class="fa-solid fa-heart-pulse"></i> <span data-i18n="cat_detox">Prog. Detox</span> (<span id="count-detox">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('bebidas', this)">
+        <i class="fa-solid fa-bottle-water"></i> <span data-i18n="cat_bebidas">Bebidas Funcionais</span> (<span id="count-bebidas">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('gelato', this)">
+        <i class="fa-solid fa-ice-cream"></i> <span data-i18n="cat_gelato">Gelato Protéico</span> (<span id="count-gelato">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('salgados', this)">
+        <i class="fa-solid fa-utensils"></i> <span data-i18n="cat_salgados">Salgados & Pratos</span> (<span id="count-salgados">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('shakes', this)">
+        <i class="fa-solid fa-glass-water"></i> <span data-i18n="cat_shakes">Shakes Protéicos</span> (<span id="count-shakes">0</span>)
+      </button>
+      <button class="nav-tab" onclick="filterCategory('doces', this)">
+        <i class="fa-solid fa-cake-candles"></i> <span data-i18n="cat_doces">Doces Fit</span> (<span id="count-doces">0</span>)
+      </button>
+    </nav>
+
+    <!-- Estado de Busca Vazia -->
+    <div id="empty-search" class="empty-search-state" style="display: none;">
+      <i class="fa-solid fa-cookie-bite"></i>
+      <h3 data-i18n="empty_title">Nenhum produto encontrado</h3>
+      <p data-i18n="empty_desc">Tente buscar por outro ingrediente ou selecione outra categoria.</p>
+    </div>
+
+    <!-- Seções Estruturadas do Cardápio -->
+    <section id="menu-sections-container" class="menu-sections"></section>
+
+  </main>
+
+  <!-- Rodapé Institucional do PDF -->
+  <footer class="pdf-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <strong>EVS TOP BARÃO</strong>
+        <p><i class="fa-solid fa-location-dot"></i> Tv. Barão do Triunfo, 3271</p>
+      </div>
+      <div class="footer-col">
+        <p><i class="fa-brands fa-whatsapp"></i> <span data-i18n="footer_delivery">Delivery</span>: +55 91 98202-5980 (Nádia Palheta)</p>
+      </div>
+      <div class="footer-col">
+        <p><i class="fa-solid fa-credit-card"></i> <span data-i18n="footer_payments">Pagamentos: Pix, Cartão de Crédito e Débito</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Barra Flutuante de Carrinho / Subtotal em Tempo Real -->
+  <aside id="cart-float-bar" class="cart-float-bar hidden" onclick="openCheckoutModal()">
+    <div class="cart-float-left">
+      <div class="cart-badge-icon">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span id="cart-count-badge">0</span>
+      </div>
+      <div class="cart-float-values">
+        <span class="val-label" data-i18n="subtotal_float">Subtotal do Pedido</span>
+        <span class="val-number" id="cart-total-badge">R$ 0,00</span>
+      </div>
+    </div>
+    <div class="cart-float-right">
+      <span data-i18n="view_order">Ver Pedido</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </div>
+  </aside>
+
+  <!-- Modal de Personalização ("Monte do Seu Jeito") -->
+  <div id="customize-modal" class="modal-backdrop" onclick="closeCustomizeOnBackdrop(event)">
+    <div class="modal-panel customize-panel">
+      <div class="modal-drag-bar"></div>
+      
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <i class="fa-solid fa-sliders gold-icon"></i>
+          <div>
+            <h2 id="custom-item-name">Personalizar Item</h2>
+            <p class="custom-item-base-price" id="custom-item-base-price">Preço base: R$ 0,00</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeCustomizeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-scroll-body">
+        
+        <!-- Grupo: Dose Extra de Proteína -->
+        <div class="custom-group">
+          <label class="custom-group-title"><i class="fa-solid fa-dumbbell"></i> <span data-i18n="extra_protein_title">Dose Extra de Proteína</span> (+ R$ 8,00)</label>
+          <div class="custom-options-list">
+            <label class="custom-check-pill">
+              <input type="checkbox" id="chk-protein" value="Dose Extra de Proteína" data-price="8.00" onchange="calculateCustomPrice()">
+              <span><strong data-i18n="extra_protein_opt">Adicionar +1 Dose de Proteína Pura</strong> (+ R$ 8,00)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Grupo: Borda Adicional -->
+        <div class="custom-group">
+          <label class="custom-group-title"><i class="fa-solid fa-cookie"></i> <span data-i18n="extra_border_title">Borda Artesanal Adicional</span> (+ R$ 6,00)</label>
+          <div class="custom-options-list">
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_border" value="Nenhuma" data-price="0" checked onchange="calculateCustomPrice()">
+              <span data-i18n="opt_none">Nenhuma</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_border" value="Borda de Chocolate" data-price="6.00" onchange="calculateCustomPrice()">
+              <span>Chocolate (+ R$ 6,00)</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_border" value="Borda de Doce de Leite" data-price="6.00" onchange="calculateCustomPrice()">
+              <span>Doce de Leite (+ R$ 6,00)</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_border" value="Borda de Baunilha" data-price="6.00" onchange="calculateCustomPrice()">
+              <span>Baunilha (+ R$ 6,00)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Grupo: Fibras Especiais -->
+        <div class="custom-group">
+          <label class="custom-group-title"><i class="fa-solid fa-seedling"></i> <span data-i18n="extra_fiber_title">Fibras Especiais</span> (+ R$ 9,00)</label>
+          <div class="custom-options-list">
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_fiber" value="Nenhuma" data-price="0" checked onchange="calculateCustomPrice()">
+              <span data-i18n="opt_none">Nenhuma</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_fiber" value="Fibra de Uva" data-price="9.00" onchange="calculateCustomPrice()">
+              <span>Uva (+ R$ 9,00)</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_fiber" value="Fibra de Manga" data-price="9.00" onchange="calculateCustomPrice()">
+              <span>Manga (+ R$ 9,00)</span>
+            </label>
+            <label class="custom-radio-pill">
+              <input type="radio" name="custom_fiber" value="Fibra de Limão com Mel" data-price="9.00" onchange="calculateCustomPrice()">
+              <span>Limão com Mel (+ R$ 9,00)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Grupo: Toppings Crocantes -->
+        <div class="custom-group">
+          <label class="custom-group-title"><i class="fa-solid fa-bowl-rice"></i> <span data-i18n="extra_toppings_title">Toppings Crocantes</span></label>
+          <div class="custom-options-list">
+            <label class="custom-check-pill">
+              <input type="checkbox" id="chk-crunch" value="Crunch Protéico" data-price="6.00" onchange="calculateCustomPrice()">
+              <span>Crunch Protéico (+ R$ 6,00)</span>
+            </label>
+            <label class="custom-check-pill">
+              <input type="checkbox" id="chk-peanut" value="Amendoim Tostado" data-price="3.00" onchange="calculateCustomPrice()">
+              <span>Amendoim Tostado (+ R$ 3,00)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Observação da Personalização -->
+        <div class="custom-group">
+          <label class="custom-group-title"><i class="fa-solid fa-pencil"></i> <span data-i18n="custom_obs_title">Instruções especiais do item:</span></label>
+          <input type="text" id="custom-item-obs" class="modal-input" placeholder="Ex: bem gelado, sem canudo, calda extra...">
+        </div>
+
+        <!-- Botão Adicionar Item Personalizado -->
+        <button class="btn-add-custom" onclick="confirmCustomizedItem()">
+          <span data-i18n="add_custom_btn">Adicionar ao Pedido</span> • <strong id="custom-total-btn-price">R$ 0,00</strong>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Checkout / Finalização de Pedido -->
+  <div id="checkout-modal" class="modal-backdrop" onclick="closeCheckoutOnBackdrop(event)">
+    <div class="modal-panel">
+      <div class="modal-drag-bar"></div>
+      
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <i class="fa-solid fa-receipt gold-icon"></i>
+          <h2 data-i18n="checkout_title">Resumo do Pedido</h2>
+        </div>
+        <button class="modal-close-btn" onclick="closeCheckoutModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-scroll-body">
+        <!-- Lista de Itens no Carrinho -->
+        <div id="cart-items-list" class="cart-items-list"></div>
+
+        <!-- Opção de Entrega / Retirada -->
+        <div class="form-group-block">
+          <label class="block-label"><i class="fa-solid fa-location-dot"></i> <span data-i18n="delivery_prompt">Como deseja receber?</span></label>
+          <div class="delivery-options-grid">
+            <button type="button" class="deliv-btn active" onclick="setDeliveryMode('Consumir no EVS', this)">
+              <i class="fa-solid fa-store"></i>
+              <span data-i18n="opt_dine_in">No EVS</span>
+            </button>
+            <button type="button" class="deliv-btn" onclick="setDeliveryMode('Retirar no EVS', this)">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span data-i18n="opt_takeaway">Retirada</span>
+            </button>
+            <button type="button" class="deliv-btn" onclick="setDeliveryMode('Delivery', this)">
+              <i class="fa-solid fa-motorcycle"></i>
+              <span data-i18n="opt_delivery">Delivery</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dados do Cliente -->
+        <div class="form-group-block">
+          <label class="block-label"><i class="fa-solid fa-user"></i> <span data-i18n="client_data_title">Seus Dados</span></label>
+          <input type="text" id="cust-name" class="modal-input" placeholder="Seu nome completo *" required>
+          
+          <div id="delivery-address-row" style="display: none;">
+            <input type="text" id="cust-address" class="modal-input" placeholder="Endereço de Entrega (Rua, Número, Bairro, Ref.) *">
+          </div>
+
+          <textarea id="cust-obs" class="modal-textarea" rows="2" placeholder="Observações gerais do pedido..."></textarea>
+        </div>
+
+        <!-- Forma de Pagamento -->
+        <div class="form-group-block">
+          <label class="block-label"><i class="fa-solid fa-credit-card"></i> <span data-i18n="payment_title">Forma de Pagamento</span></label>
+          <div class="payment-options-grid">
+            <label class="pay-chip active" onclick="setPaymentType('PIX', this)">
+              <input type="radio" name="payment_method" value="PIX" checked>
+              <i class="fa-brands fa-pix"></i> PIX
+            </label>
+            <label class="pay-chip" onclick="setPaymentType('Cartão de Crédito', this)">
+              <input type="radio" name="payment_method" value="Cartão de Crédito">
+              <i class="fa-solid fa-credit-card"></i> <span data-i18n="pay_credit">Crédito</span>
+            </label>
+            <label class="pay-chip" onclick="setPaymentType('Cartão de Débito', this)">
+              <input type="radio" name="payment_method" value="Cartão de Débito">
+              <i class="fa-solid fa-money-check-dollar"></i> <span data-i18n="pay_debit">Débito</span>
+            </label>
+            <label class="pay-chip" onclick="setPaymentType('Dinheiro', this)">
+              <input type="radio" name="payment_method" value="Dinheiro">
+              <i class="fa-solid fa-money-bill-wave"></i> <span data-i18n="pay_cash">Dinheiro</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Caixa de Totalizadores -->
+        <div class="order-total-card">
+          <div class="total-row">
+            <span data-i18n="total_qty_label">Quantidade Total:</span>
+            <strong id="summary-items-count">0 itens</strong>
+          </div>
+          <div class="total-row">
+            <span data-i18n="subtotal_label">Subtotal:</span>
+            <strong id="summary-subtotal-price">R$ 0,00</strong>
+          </div>
+          <div class="total-row highlight-grand-total">
+            <span data-i18n="grand_total_label">Total a Pagar:</span>
+            <span class="grand-price" id="summary-grand-price">R$ 0,00</span>
+          </div>
+        </div>
+
+        <!-- Botão WhatsApp -->
+        <button class="btn-whatsapp-finish" onclick="dispatchOrderWhatsApp()">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span data-i18n="send_whatsapp_btn">Enviar Pedido para o WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Zoom / Visualização da Imagem Completa (Sem Cortes) -->
+  <div id="image-zoom-modal" class="zoom-modal-backdrop" onclick="closeImageZoom(event)">
+    <div class="zoom-modal-container">
+      <button class="zoom-close-btn" onclick="closeImageZoom(event)"><i class="fa-solid fa-xmark"></i></button>
+      <div class="zoom-img-wrapper">
+        <img id="zoom-modal-img" src="" alt="Produto EVS Top Barão">
+      </div>
+      <div class="zoom-caption" id="zoom-modal-caption"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>
