@@ -301,7 +301,7 @@ const MENU_DATA = [
     category: 'salgados',
     name: 'Croquete Fitness de Frango',
     subtitle: 'Com Sopa Lanche & Requeijão Light',
-    price: 18.00,
+    price: 17.00,
     desc: 'Frango desfiado temperado com ervas finas, enriquecido com sopa lanche, fatia de queijo e requeijão light.',
     image: 'img/croqueteFrango.jpg',
     defaultImg: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80'
@@ -383,7 +383,7 @@ const MENU_DATA = [
     category: 'shakes',
     name: 'Shake Cocadinha Borda Dupla C/ Bombom Fit',
     subtitle: 'Coco & Bombom Fit',
-    price: 47.00,
+    price: 50.00,
     desc: 'Shake cremoso de coco sem açúcar, com borda dupla de doce de leite vegano e brigadeiro, finalizado com bombom de cocada e coco ralado.',
     image: 'img/ShakeCocadinhaBordaDupla.jpg',
     defaultImg: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=600&q=80'
@@ -425,7 +425,7 @@ const MENU_DATA = [
     category: 'doces',
     name: 'Pudim Protéico Fit',
     subtitle: 'Leve, Cremoso & Sem Culpa',
-    price: 28.00,
+    price: 32.00,
     desc: 'Pudim leve, cremoso e sem culpa com a logo oficial EVS Top Barão (consultar sabores do dia).',
     image: 'img/Pudim Proteico.jpg',
     defaultImg: 'https://images.unsplash.com/photo-1517427294546-5aa121f68e8a?auto=format&fit=crop&w=600&q=80'
@@ -447,7 +447,7 @@ const MENU_DATA = [
     subtitle: 'Shake + Cacau 70%',
     price: 6.00,
     desc: 'Feito com shake de chocolate e cacau 70%. (Opção Kit 4x por R$ 20,00).',
-    image: 'img/Bolinhos proteico.jpg',
+    image: 'img/BolinhoProteicoChocolate.jpg',
     defaultImg: 'https://images.unsplash.com/photo-1598373182133-52452f7691ef?auto=format&fit=crop&w=600&q=80'
   }
 ];
